@@ -1,0 +1,74 @@
+<div class="container py-5">
+    <div *ngIf="loading" class="row">
+        <div class="col-12 py-5 my-5">
+            <div class="d-flex justify-content-center">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="!loading" class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-5 g-3">
+        <div class="col" *ngFor="let data of results; let i = index">
+            <div class="card shadow-sm h-100">
+                <a routerLink="/detail/{{getId(data.url)}}">
+                    <img src="https://vieraboschkova.github.io/swapi-gallery/static/assets/img/people/{{getId(data.url)}}.jpg"  class="card-img-top">
+                </a>
+                
+                <div class="card-body">
+                    <a class="text-black text-decoration-none" routerLink="/detail/{{getId(data.url)}}">
+                        <p class="card-text text-center fw-bold">{{data.name}}</p>
+                    </a>
+                    
+                </div>
+                <div class="card-footer text-muted">
+                    <div class="row">
+                        <div class="col-6 col-lg-12">
+                            <small class="text-muted">Gender : {{data.gender}}</small>
+                        </div>
+                        <div class="col-6 col-lg-12">
+                            <small class="text-muted">Height : {{data.height}}</small>
+                        </div>
+                        <div class="col-6 col-lg-12">
+                            <small class="text-muted">Mass : {{data.mass}}</small>
+                        </div>
+                        <div class="col-6 col-lg-12">
+                            <small class="text-muted">Birth Year : {{data.birth_year}}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+    </div>
+    <nav *ngIf="!loading" class="mt-4">
+        
+        <ul class="pagination justify-content-center mb-2">
+          <li class="page-item  {{hasprev ?'':'disabled'}}">
+            <a class="page-link" (click)="gotopage(currentpage-1)"><i class="bi bi-chevron-left"></i></a>
+          </li>
+          <li class="page-item {{hasnext ?'':'disabled'}}">
+            <a class="page-link" (click)="gotopage(currentpage+1)"><i class="bi bi-chevron-right"></i></a>
+          </li>
+        </ul>
+        <p class="text-center mb-3"><small>Page {{currentpage}} of {{totalpage}}</small></p>
+        <div class="row d-flex justify-content-center">
+            <div class="col-auto"><small>Go to page </small></div>
+            <div class="col-auto">
+
+                <div class="input-group mb-3">
+                    <input type="number" class="form-control form-control-sm" max="{{totalpage}}" min="1" [(ngModel)]="valCurrentPage" [ngModelOptions]="{standalone: true}">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary btn-sm" type="button"  (click)="godirect(valCurrentPage)">Go</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </nav>
+</div>
+

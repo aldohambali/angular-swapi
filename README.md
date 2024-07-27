@@ -1,3 +1,15 @@
+
+## Live Preview
+
+Live preview [here](https://aldoayli.com/test/swapi/).
+
+
+![Preview Person](https://github.com/aldohambali/angular-swapi/blob/main/person.png)
+
+![Preview Detail Person](https://github.com/aldohambali/angular-swapi/blob/main/person-detail.png)
+
+
+
 # AngularSwapi
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.10.
