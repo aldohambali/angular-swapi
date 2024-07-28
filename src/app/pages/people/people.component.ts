@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { PeopleService } from 'src/app/_services/people.services';
+import { apicallService } from 'src/app/_services/apicall.services';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-people',
@@ -18,7 +19,7 @@ export class PeopleComponent {
   totalAll:number=0
   valCurrentPage:number=1
 	constructor(
-		private peopleServices: PeopleService,
+    private apicallServices: apicallService
 	) {}
 	ngOnInit(): void {
 
@@ -30,7 +31,7 @@ export class PeopleComponent {
 	}
   getPeople(){
     this.loading=true
-    this.peopleServices.getPeople(this.currentpage).subscribe((res:any) => {
+    this.apicallServices.getData(environment.api+'/people/?page='+this.currentpage+'').subscribe((res:any) => {
       console.log('res : ',res)
       this.loading=false
       if(res?.results){
@@ -38,6 +39,9 @@ export class PeopleComponent {
         this.totalAll = res?.count
         this.loadPaging()
       }
+    },
+    (err:any) => {
+      alert('Opps something wrong, please try again later.')
     });
   }
   getId(url:string){

@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { PeopleService } from 'src/app/_services/people.services';
+import { apicallService } from 'src/app/_services/apicall.services';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-people-detail',
@@ -22,7 +23,7 @@ export class PeopleDetailComponent {
 
 	constructor(
     private route: ActivatedRoute,
-		private peopleServices: PeopleService,
+    private apicallServices: apicallService,
     private http:HttpClient,
 	) {}
 	ngOnInit(): void {
@@ -33,7 +34,7 @@ export class PeopleDetailComponent {
   getDetail(){
     if(this.getId){
       this.loading=true
-      this.peopleServices.getDetailPeople(this.getId).subscribe((res:any) => {
+      this.apicallServices.getData(environment.api+'/people/'+this.getId+'').subscribe((res:any) => {
         console.log('res : ',res)
         this.loading=false
         if(res?.name){
@@ -56,6 +57,9 @@ export class PeopleDetailComponent {
           }
 
         }
+      },
+      (err:any) => {
+        alert('Opps something wrong, please try again later.')
       });
     } 
   }
@@ -67,56 +71,41 @@ export class PeopleDetailComponent {
   loadTitleDetail(type:string,res:any){
      switch (type) {
       case 'films':
-        res.forEach( (e:any) => {           
-          this.getDataTitle(e).then((data) => {
-           this.films.push(data.title)
-          })
-          .catch((error) => {
-            console.log("Promise rejected with " + JSON.stringify(error));
+        res.forEach( (e:any) => {    
+          this.apicallServices.getData(e).subscribe((res:any) => {
+            res?.title && this.films.push(res.title)
           });
         });
         
         break;
       case 'vehicles':
-        res.forEach( (e:any) => {           
-          this.getDataTitle(e).then((data) => {
-           this.vehicles.push(data.name)
-          })
-          .catch((error) => {
-            console.log("Promise rejected with " + JSON.stringify(error));
+        res.forEach( (e:any) => {      
+          this.apicallServices.getData(e).subscribe((res:any) => {
+            res?.name && this.vehicles.push(res.name)
           });
         });
         
         break;
       case 'species':
-        res.forEach( (e:any) => {           
-          this.getDataTitle(e).then((data) => {
-           this.species.push(data.name)
-          })
-          .catch((error) => {
-            console.log("Promise rejected with " + JSON.stringify(error));
+        res.forEach( (e:any) => { 
+          this.apicallServices.getData(e).subscribe((res:any) => {
+            res?.name && this.species.push(res.name)
           });
         });
         
         break;
 
       case 'starships':
-        res.forEach( (e:any) => {           
-          this.getDataTitle(e).then((data) => {
-           this.starships.push(data.name)
-          })
-          .catch((error) => {
-            console.log("Promise rejected with " + JSON.stringify(error));
+        res.forEach( (e:any) => {     
+          this.apicallServices.getData(e).subscribe((res:any) => {
+            res?.name && this.starships.push(res.name)
           });
         });
         break;   
       case 'homeworld':
-        this.getDataTitle(res).then((data) => {
-          this.homeworld = data.name
-         })
-         .catch((error) => {
-           console.log("Promise rejected with " + JSON.stringify(error));
-         });
+         this.apicallServices.getData(res).subscribe((res:any) => {
+          this.homeworld =  res.name ? res.name :''
+        });
         break;                               
     }
 
